@@ -249,6 +249,11 @@ class Board:
             kg = King((i - 1) * 7, 4, i)
             self.field[(i - 1) * 7][3] = qn
             self.field[(i - 1) * 7][4] = kg
+        # pn1 = Pawn(5, 4, 1)
+        # pn2 = Pawn(4, 3, 2)
+        # self.field[5][4] = pn1
+        # self.field[4][3] = pn2
+
 
     def current_player_color(self):
         return self.color
@@ -278,18 +283,19 @@ class Board:
             return False
         if piece.get_color() != self.color:
             return False
-        if not piece.can_move(row1, col1):
-            return False
+
         if self.field[row1][col1] is not None:
             if self.field[row1][col1].get_color() == self.color:
                 return False
-            if not (
-                isinstance(piece, Pawn)
-                and self.field[row1][col1].get_color() != self.color
-                and row - row1 == 1
-                and abs(col - col1) == 1
-            ):
-                return False
+            if (isinstance(piece, Pawn) and self.field[row1][col1].get_color() != self.color
+                    and abs(row - row1) == 1 and abs(col - col1) == 1):
+                self.field[row][col] = None
+                self.field[row1][col1] = piece
+                piece.set_position(row1, col1)
+                self.color = opponent(self.color)
+                return True
+        if not piece.can_move(row1, col1):
+            return False
 
         self.field[row][col] = None  # Снять фигуру.
         self.field[row1][col1] = piece  # Поставить на новое место.
