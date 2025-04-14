@@ -332,3 +332,5 @@ class Board:
             result += f"{col}    "
         result += "\n"
         return result
+
+main()
