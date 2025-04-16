@@ -74,12 +74,7 @@ class Knight(Figure):
         if not (7 >= row >= 0) or not (7 >= col >= 0):
             return False
 
-        if not (
-            abs(self.row - row) == 1
-            and abs(self.col - col) == 2
-            or abs(self.row - row) == 2
-            and abs(self.col - col) == 1
-        ):
+        if not (abs(self.row - row) == 1 and abs(self.col - col) == 2 or abs(self.row - row) == 2 and abs(self.col - col) == 1):
             return False
 
         return True
@@ -103,11 +98,7 @@ class Queen(Figure):
         if not (7 >= row >= 0) or not (7 >= col >= 0):
             return False
 
-        if (
-            not (abs(self.row - row) == abs(self.col - col))
-            and self.row != row
-            and self.col != col
-        ):
+        if not (abs(self.row - row) == abs(self.col - col)) and self.row != row and self.col != col:
             return False
 
         return True
@@ -142,16 +133,7 @@ class King(Figure):
         if not (7 >= row >= 0) or not (7 >= col >= 0):
             return False
 
-        if not (
-            (
-                abs(self.row - row) == 1
-                and abs(self.col - col) == 1
-                or abs(self.row - row) == 0
-                and abs(self.col - col) == 1
-                or abs(self.row - row) == 1
-                and abs(self.col - col) == 0
-            )
-        ):
+        if not ((abs(self.row - row) == 1 and abs(self.col - col) == 1 or abs(self.row - row) == 0 and abs(self.col - col) == 1 or abs(self.row - row) == 1 and abs(self.col - col) == 0)):
             return False
 
         return True
@@ -183,7 +165,6 @@ class Board:
         self.field[5][4] = pn1
         self.field[4][3] = pn2
 
-
     def current_player_color(self):
         return self.color
 
@@ -210,9 +191,11 @@ class Board:
         if self.field[row1][col1] is not None:
             if self.field[row1][col1].get_color() == self.color:
                 return False
-            if (isinstance(piece, Pawn) and self.field[row1][col1].get_color() != self.color
-                    and (row - row1 == -1 and abs(col - col1) == 1 and piece.get_color() == WHITE == self.color
-                    or row - row1 == 1 and abs(col - col1) == 1 and piece.get_color() == BLACK == self.color)):
+            if (
+                isinstance(piece, Pawn)
+                and self.field[row1][col1].get_color() != self.color
+                and (row - row1 == -1 and abs(col - col1) == 1 and piece.get_color() == WHITE == self.color or row - row1 == 1 and abs(col - col1) == 1 and piece.get_color() == BLACK == self.color)
+            ):
                 self.field[row][col] = None
                 self.field[row1][col1] = piece
                 piece.set_position(row1, col1)
@@ -222,7 +205,6 @@ class Board:
                 return True
         if not piece.can_move(row1, col1):
             return False
-
 
         self.field[row][col] = None
         self.field[row1][col1] = piece
@@ -238,7 +220,7 @@ class Board:
                     if piece.get_color() == color and piece.can_move(row, col):
                         return True
 
-    def print_board(self):  # Распечатать доску в текстовом виде (см. скриншот)
+    def print_board(self):
         print("     +----+----+----+----+----+----+----+----+")
         for row in range(7, -1, -1):
             print(" ", row, end="  ")
@@ -265,5 +247,6 @@ class Board:
             result += f"{col}    "
         result += "\n"
         return result
+
 
 main()
